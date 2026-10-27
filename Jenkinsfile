@@ -3,15 +3,20 @@ pipeline {
 
     stages {
 
-        stage('Verify Environment') {
+        stage('Checkout') {
             steps {
-                sh 'java -version'
+                checkout scm
+            }
+        }
+
+        stage('Verify Tools') {
+            steps {
                 sh 'git --version'
                 sh 'docker --version'
             }
         }
 
-        stage('Build Backend Image') {
+        stage('Build Backend') {
             steps {
                 dir('backend') {
                     sh 'docker build -t backend-app .'
@@ -19,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Image') {
+        stage('Build Frontend') {
             steps {
                 dir('frontend') {
                     sh 'docker build -t frontend-app .'
@@ -27,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('List Images') {
+        stage('List Docker Images') {
             steps {
                 sh 'docker images'
             }
